@@ -62,12 +62,18 @@ router.post("/login", async (req, res) => {
         }
 
         // Kontroller att username och password är rätt
-        if (username === "user" && password === "password") {
-            res.status(200).json({ message: "Login successful" });
-        } else {
-            res.status(401).json({ error: "Invalid username or password"}); // Felmeddelande om fel användarnamn eller lösenrod
-        }
+        const user = await User.findOne({ username}); // Kontrollera om användarnamn finns
 
+        if(!user) {
+            return res.status(401).json({ error: "Incorrect username or password" }); // Felaktigt användarnamn
+        }
+        // Kontrollera att lösenord är rätt
+        const isPasswordCorrect = await user.comparePassword(password);
+        if(!isPasswordCorrect) {
+            return res.status(401).json({ error: "Incorrect username or password" }); // Felaktigt lösenord
+        } else { // Korrekta uppgifter
+            res.status(200).json({ message: "User logged in" })
+        }
     } catch(error) {
         res.status(500).json({ error: "Server error" + error}); // Felmeddelande
     }
