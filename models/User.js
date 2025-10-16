@@ -32,3 +32,14 @@ userSchema.pre("save", async function(next) {
         next(error);
     }
 });
+
+// Registrera ny användare
+userSchema.statics.register = async function ( username, password) {
+    try {
+        const user = new this({ username, password });
+        await user.save(); // Spara användare
+        return user;
+    } catch (error) {
+        throw error;
+    }
+};
