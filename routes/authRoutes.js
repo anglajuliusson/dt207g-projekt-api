@@ -34,6 +34,9 @@ router.post("/register", async (req, res) => {
         }
 
         // Correct - save user
+        const user = new User({ username, password });
+        await user.save(); // Spara användare
+
         res.status(201).json({ message: "User created"});
 
     } catch (error) {
