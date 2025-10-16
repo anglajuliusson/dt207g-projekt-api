@@ -43,3 +43,12 @@ userSchema.statics.register = async function ( username, password) {
         throw error;
     }
 };
+
+// Jämför hashat lösenord
+userSchema.methods.comparePassword = async function (password) {
+    try {
+        return await bcrypt.compare(password, this.password); // Är det hashade lösenordet likadant som det inmatade lösenordet
+    } catch (error) {
+        throw error;
+    }
+};
