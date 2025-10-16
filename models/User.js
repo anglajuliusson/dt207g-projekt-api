@@ -18,3 +18,17 @@ const userSchema = new mongoose.Schema({
         default: Date.new
     }
 });
+
+// Hasha lösenord
+userSchema.pre("save", async function(next) {
+    try {
+        if(this.isnew || this.isModified("password")) {
+            const hashedPassword = await bcrypt.hash(this.password, 10);
+            this.password = hashedPassword;
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
