@@ -70,8 +70,12 @@ userSchema.statics.login = async function (username, password) {
         }
         // Rätt uppgifter, logga in
         return user;
-        
+
     } catch (error) {
         throw error;
     }
-}
+};
+
+// Skapar en Mongoose-modell "User" baserat på userSchema
+const User = mongoose.model("User", userSchema); // Modellen används för att interagera med MongoDB (CRUD-operationer)
+module.exports = User; // Exporterar modellen så att den kan importeras och användas i andra filer
