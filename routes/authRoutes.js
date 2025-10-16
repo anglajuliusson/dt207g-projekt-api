@@ -40,7 +40,7 @@ router.post("/register", async (req, res) => {
         res.status(201).json({ message: "User created"});
 
     } catch (error) {
-        res.status(500).json({ error: "Server error" + error}); // Felmeddelande
+        res.status(500).json({ error: "Server error " + error}); // Felmeddelande
     }
 });
 
