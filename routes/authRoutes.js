@@ -14,7 +14,7 @@ mongoose.connect(process.env.DATABASE).then(() => {
 })
 
 // User model
-const user = require("../models/User");
+const User = require("../models/User");
 
 // Registrera ny användare
 router.post("/register", async (req, res) => {
