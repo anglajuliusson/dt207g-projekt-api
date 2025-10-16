@@ -13,6 +13,9 @@ mongoose.connect(process.env.DATABASE).then(() => {
     console.error("Error connecting to database...");
 })
 
+// User model
+const user = require("../models/User");
+
 // Registrera ny användare
 router.post("/register", async (req, res) => {
     console.log("Register called...");
