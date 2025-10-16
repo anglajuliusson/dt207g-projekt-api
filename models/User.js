@@ -52,3 +52,26 @@ userSchema.methods.comparePassword = async function (password) {
         throw error;
     }
 };
+
+// Logga in
+userSchema.statics.login = async function (username, password) {
+    try {
+        const user = await this.findOne({ username });
+
+        // Fel användarnamn
+        if(!user) {
+            throw new Error("Incorrect username or password");
+        }
+
+        const isPasswordCorrect = await user.comparePassword(password);
+        // Fel lösenord
+        if(!isPasswordCorrect) {
+            throw new Error("Incorrect username or passsword");
+        }
+        // Rätt uppgifter, logga in
+        return user;
+        
+    } catch (error) {
+        throw error;
+    }
+}
