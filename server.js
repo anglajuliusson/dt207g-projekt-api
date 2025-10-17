@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const boduParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes"); // Inkludera authRoute
+const dishRoutes = require("./routes/dishRoutes"); // inkludera dishRoutes
 const jwt = require("jsonwebtoken"); // Inkludera JWT
 require("dotenv").config(); // Laddar variabler från .env-filen
 
@@ -12,6 +13,7 @@ app.use(boduParser.json());
 
 // Routes
 app.use("/api", authRoutes);
+app.use("/api", dishRoutes);
 
 // Skyddade routes
 app.get("/api/protected", authenticateToken, (req, res) => {
