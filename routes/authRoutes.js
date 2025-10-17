@@ -72,6 +72,7 @@ router.post("/login", async (req, res) => {
         if(!isPasswordCorrect) {
             return res.status(401).json({ error: "Incorrect username or password" }); // Felaktigt lösenord
         } else { // Korrekta uppgifter
+            
             res.status(200).json({ message: "User logged in" })
         }
     } catch(error) {
