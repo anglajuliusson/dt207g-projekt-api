@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose"); // Inkludera mongoose
+const jwt = require("jsonwebtoken"); // Inkludera JWT
 require("dotenv").config();
 
 // Anslut till MongoDB
@@ -72,8 +73,14 @@ router.post("/login", async (req, res) => {
         if(!isPasswordCorrect) {
             return res.status(401).json({ error: "Incorrect username or password" }); // Felaktigt lösenord
         } else { // Korrekta uppgifter
-            
-            res.status(200).json({ message: "User logged in" })
+            // Skapa JWT
+            const payload = { username: username }; // Vilken användare är inloggad?
+            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "1h" }); // Hur länge kan användaren vara inloggad tills man behöver logga in igen
+            const response = {
+                message: "User logged in",
+                token: token
+            }
+            res.status(200).json({ response });
         }
     } catch(error) {
         res.status(500).json({ error: "Server error" + error}); // Felmeddelande
