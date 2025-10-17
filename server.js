@@ -1,6 +1,7 @@
 const express = require("express");
 const boduParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes"); // Inkludera authRoute
+const jwt = require("jsonwebtoken"); // Inkludera JWT
 require("dotenv").config(); // Laddar variabler från .env-filen
 
 const app = express();
@@ -9,6 +10,25 @@ app.use(boduParser.json());
 
 // Routes
 app.use("/api", authRoutes);
+
+// Skyddade routes
+app.get("/api/protected", authenticateToken, (req, res) => {
+    res.json({ message: "Skyddad route" });
+});
+// Validera token
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1]; // Token
+
+    if(token == null) res.status(401).json({ message: "Not authorized for this route - token missing" });
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username ) => {
+        if(err) return res.status(403).json({ message: "Invalid JWT" }); // Felmeddelande vid ogiltigt JWT
+
+        req.username = username;
+        next();
+    });
+}
 
 // Starta applikation
 app.listen(port, () => {
