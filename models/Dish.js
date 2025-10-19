@@ -14,6 +14,11 @@ const dishSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  category: {
+    type: String,
+    enum: ["förrätt", "huvudrätt", "efterrätt"],
+    required: true,
+  },
   created: {
     type: Date,
     default: Date.new
