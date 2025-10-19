@@ -11,14 +11,6 @@ const port = process.env.PORT || 3000; // Hämtar port från variabel eller anv�
 app.use(cors());
 app.use(boduParser.json());
 
-// Routes
-app.use("/api", authRoutes);
-app.use("/api", dishRoutes);
-
-// Skyddade routes
-app.get("/api/protected", authenticateToken, (req, res) => {
-    res.json({ message: "Skyddad route" });
-});
 // Validera token
 function authenticateToken(req, res, next) {
     const authHeader = req.headers["authorization"];
@@ -33,6 +25,16 @@ function authenticateToken(req, res, next) {
         next();
     });
 }
+
+// Routes
+app.use("/api", authRoutes);
+
+// Skyddade routes
+app.get("/api/protected", authenticateToken, (req, res) => {
+    res.json({ message: "Skyddad route" });
+});
+
+app.use("/api", dishRoutes);
 
 // Starta applikation
 app.listen(port, () => {
