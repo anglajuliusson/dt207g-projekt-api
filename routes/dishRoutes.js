@@ -37,13 +37,14 @@ router.post("/", authenticateToken, async (req, res) => { // Bara inloggade anv�
     console.log("Create dish called...");
   
     try {
-      let { name, description, price } = req.body;
+      let { name, description, price, category } = req.body;
   
       // Validera input, kolla vilka fält som saknas
       const missingFields = [];
       if (!name) missingFields.push("name"); // Om namn saknas
       if (!description) missingFields.push("description"); // Om beskrivning saknas
       if (!price) missingFields.push("price"); // Om pris sknas
+      if (!category) missingFields.push("category"); // Om kategori saknas
   
       // Skriv ut det saknade värdet
       if (missingFields.length > 0) {
@@ -53,7 +54,7 @@ router.post("/", authenticateToken, async (req, res) => { // Bara inloggade anv�
       }
   
       // Skapa och spara ny rätt
-      const dish = new Dish({ name, description, price });
+      const dish = new Dish({ name, description, price, category });
       await dish.save(); // Spara rätt
   
       res.status(201).json({ message: "Dish created", dish });
@@ -63,6 +64,17 @@ router.post("/", authenticateToken, async (req, res) => { // Bara inloggade anv�
     }
   });  
 
+// Hämta rätter utifrån kategori
+router.get("/category/:type", async (req, res) => {
+    try {
+      const category = req.params.type;
+      const dishes = await Dish.find({ category });
+      res.json(dishes);
+    } catch (err) {
+      res.status(500).json({ message: "Server error" + err.message });
+    }
+  });
+  
 // Hämta specifik rätt via ID
 router.get("/:id", async (req, res) => {
   try {
@@ -72,7 +84,7 @@ router.get("/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error: " + err.message });
   }
-});
+}); 
 
 // Uppdatera specifik rätt vid ID
 router.put("/:id", authenticateToken, async (req, res) => {
