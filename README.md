@@ -23,3 +23,6 @@ Webbtjänsten hanterar företagets data, som menyer, och levererar data i **JSON
 - **dotenv** för miljövariabler
 - **bcrypt** för lösenordshantering
 - **cors** för kommunikation mellan frontend och backend
+
+## Säkerhet
+- Endast inloggade användare med giltig JWT-token får åtkomst till skyddade delar av API:et.
