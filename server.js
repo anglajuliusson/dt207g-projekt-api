@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const boduParser = require("body-parser");
+const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes"); // Inkludera authRoute
 const dishRoutes = require("./routes/dishRoutes"); // inkludera dishRoutes
 const jwt = require("jsonwebtoken"); // Inkludera JWT
@@ -9,7 +9,7 @@ require("dotenv").config(); // Laddar variabler från .env-filen
 const app = express();
 const port = process.env.PORT || 3000; // Hämtar port från variabel eller använder 3000 som standard
 app.use(cors());
-app.use(boduParser.json());
+app.use(bodyParser.json());
 
 // Validera token
 function authenticateToken(req, res, next) {
